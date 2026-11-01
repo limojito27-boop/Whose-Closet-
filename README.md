@@ -13,7 +13,6 @@ A seasonal outfit and costume prompt collection for character creation.
 - **Random Colors** — Generate alternative color combinations instantly.
 - **Sample Images** — Visual references for outfit combinations.
 - **Copy Prompts** — Copy outfit descriptions for use in AI image generation.
-- **CSV Collections** — Download and manage clothing data in CSV format.
 
 ## Getting Started
 
@@ -39,10 +38,6 @@ No installation is required. Open the website in your browser, choose a wardrobe
 | Autumn | Knitwear, jackets, and layered outfits |
 | Winter | Coats, insulated layers, and cold-weather clothing |
 | Special | Partywear, themed costumes, and seasonal events |
-
-## Data
-
-Outfit collections can be maintained as CSV files, making it easier to expand, edit, and organize the wardrobe.
 
 ## Technology
 

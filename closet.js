@@ -25,14 +25,17 @@ async function loadSampleImages(){
 }
 function sampleImage(gender,id,detail=false,label=id){
  const sample=currentSample(gender,id);if(!sample)return null;
- const img=document.createElement('img');img.src=sample.img;img.alt=label+' 샘플 이미지';img.loading='lazy';img.className=detail?'sample-detail':'sample-thumb';
+ const img=document.createElement('img');const full=sample.img;
+ const preview=!detail && archivedHashes[id] && full.endsWith('/closet/'+archivedHashes[id]+'.webp');
+ if(preview)img.addEventListener('error',()=>{img.src=full;},{once:true});
+ img.src=preview?full.replace('/closet/','/thumb-v1/'):full;img.alt=label+' 샘플 이미지';img.loading='lazy';img.className=detail?'sample-detail':'sample-thumb';
  return img;
 }
 function renderSample(card,outfit,gender,openDetail,notify,root){
  const slot=card.querySelector('.noimg');if(!slot)return;
  slot.replaceChildren();const img=sampleImage(gender,outfit.id,false,outfit.displayId);
  slot.classList.toggle('has-sample',!!img);slot.onclick=null;slot.removeAttribute('role');slot.removeAttribute('tabindex');slot.removeAttribute('aria-label');
- if(img){slot.appendChild(img);slot.onclick=()=>openDetail(outfit.id);slot.setAttribute('role','button');slot.tabIndex=0;slot.setAttribute('aria-label',outfit.displayId+' 샘플 이미지 크게 보기');slot.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDetail(outfit.id);}};img.onerror=()=>{slot.textContent='이미지를 불러오지 못했어요.';};}else slot.textContent='이미지 준비 중';
+ if(img){slot.appendChild(img);slot.onclick=()=>openDetail(outfit.id);slot.setAttribute('role','button');slot.tabIndex=0;slot.setAttribute('aria-label',outfit.displayId+' 샘플 이미지 크게 보기');slot.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDetail(outfit.id);}};img.onerror=()=>{if(img.src!==currentSample(gender,outfit.id)?.img || !img.complete)return;slot.textContent='이미지를 불러오지 못했어요.';};}else slot.textContent='이미지 준비 중';
 
 }
 const sampleCss='.grid{max-width:1200px;gap:16px}.toolbar,.count{max-width:1200px}.sheet-body{overflow-y:auto;min-height:0;padding:12px 16px}.sample-detail{max-height:70vh!important}@media(max-width:479px){.grid{grid-template-columns:1fr}}.noimg.has-sample{position:relative;cursor:zoom-in;overflow:hidden}.sample-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.sample-detail{display:block;max-height:50vh;width:100%;object-fit:contain;border-radius:10px;margin-bottom:12px}.sample-upload{border:1px solid var(--line);border-radius:8px;background:var(--chip);color:var(--ink);font:inherit;padding:9px;cursor:pointer}.sample-upload:disabled{opacity:.6;cursor:wait}';
